@@ -1,12 +1,20 @@
 package com.example.controller;
 
 
+import com.example.service.PostService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HelloWorldController {
+
+    private final PostService postService;
+
+    public HelloWorldController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping("/hello2")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -14,7 +22,8 @@ public class HelloWorldController {
     }
 
     @GetMapping("/")
-    public String index(){
+    public String index(Model model){
+        model.addAttribute("posts", postService.findAllDesc());
         return "index";
     }
 
