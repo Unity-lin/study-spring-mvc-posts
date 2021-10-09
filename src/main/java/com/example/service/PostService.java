@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.dto.PostsListResponseDto;
 import com.example.dto.PostsResponseDto;
 import com.example.dto.PostsSaveRequestDto;
+import com.example.dto.PostsUpdateRequestDto;
 import com.example.model.Posts;
 import com.example.model.PostsRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,16 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
         private  final PostsRepository postsRepository;
+
+
+        @Transactional
+        public Long update(Long id, PostsUpdateRequestDto requestDto) {
+            Posts posts = postsRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+
+            posts.update(requestDto.getTitle(), requestDto.getContent());
+            return id;
+        }
 
         @Transactional
         public Long save(PostsSaveRequestDto requestDto){
@@ -35,5 +46,7 @@ public class PostService {
 
             return new PostsResponseDto(entity);
     }
+
+
 }
 
