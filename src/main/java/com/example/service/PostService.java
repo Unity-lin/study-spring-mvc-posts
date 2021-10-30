@@ -48,5 +48,11 @@ public class PostService {
     }
 
 
+    public List<PostsResponseDto> findAll() {
+            return postsRepository.findAll()
+                    .stream()
+                    .map(posts -> new PostsResponseDto(posts))
+                    .collect(Collectors.toList());
+    }
 }
 
